@@ -152,7 +152,7 @@ body::before {
 }
 .lang-pick select:focus-visible { outline: none; }
 .lang-pick:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
-@media (max-width: 1020px) {
+@media (max-width: 1140px) {
   .top .wrap { padding-block: 8px; }
   .tools { margin-inline-start: auto; }
   .nav { order: 3; width: 100%; margin-inline: -12px; overflow-x: auto; }
@@ -225,6 +225,7 @@ body::before {
 }
 .ln { display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px; align-items: baseline; white-space: nowrap; animation: lnIn .4s ease both; }
 @keyframes lnIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.ln.still { animation: none; }
 @media (prefers-reduced-motion: reduce) { .ln { animation: none; } }
 .ln .t { color: var(--console-dim); }
 .ln .lv { font-weight: 500; width: 5ch; }
@@ -863,15 +864,15 @@ const LINES = [
 const stream = document.getElementById("stream");
 let i = 0, timer = null, clock = new Date(2026, 10, 22, 9, 14, 2);
 function stamp() { clock = new Date(clock.getTime() + 900 + Math.random() * 2600); return clock.toTimeString().slice(0, 8); }
-function push() {
+function push(still) {
   const [lv, msg, c] = LINES[i % LINES.length]; i++;
   const el = document.createElement("div");
-  el.className = "ln";
+  el.className = still === true ? "ln still" : "ln";
   el.innerHTML = `<span class="t">${stamp()}</span><span class="lv ${lv}">${lv}</span><span class="msg">${msg}</span><span class="crit${c >= 7 ? " hi" : ""}">${c}/10</span>`;
   stream.appendChild(el);
   while (stream.children.length > 16) stream.firstElementChild.remove();
 }
-for (let k = 0; k < 12; k++) push();
+for (let k = 0; k < 12; k++) push(true);
 
 const pauseBtn = document.getElementById("pause");
 const pauseLabel = document.getElementById("pause-label");
