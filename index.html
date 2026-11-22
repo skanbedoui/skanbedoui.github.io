@@ -1,19 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Skander Bedoui</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Skander Bedoui: software engineering student building full-stack apps and practical AI tools. Available for a six-month PFE internship, January to June 2027.">
+<meta name="description" content="Skander Bedoui : étudiant en génie logiciel, applications full-stack et outils d'IA concrets. Disponible pour un stage PFE de six mois, de janvier à juin 2027.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: a single scroll. Split hero (name + live log console), filterable project index,
    timeline, skills, about, contact. Cool paper + ink with one indigo accent.
    Readability first: 18px base text, high-contrast secondary text, 48px controls,
-   plain-language labels, and a pause button for the only moving element. */
+   plain-language labels, and a pause button for the only moving element.
+   Four languages (fr default, en, ar right-to-left, es); layout uses logical properties. */
 :root {
   --paper: #eef0f3;
   --surface: #ffffff;
@@ -34,6 +35,7 @@
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --track-tight: -0.03em;
 
   --step--1: 0.9375rem;
   --step-0: 1.125rem;
@@ -44,6 +46,11 @@
 
   --wrap: 1180px;
   --radius: 12px;
+}
+:root[lang="ar"] {
+  --f-display: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --f-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --track-tight: 0;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -72,13 +79,16 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
+:root[lang="ar"] body { line-height: 1.8; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+:root[lang="ar"] h2, :root[lang="ar"] h3 { line-height: 1.35; }
 p { max-width: 68ch; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .skip {
-  position: absolute; left: 16px; top: -100px; z-index: 20;
+  position: absolute; inset-inline-start: 16px; top: -100px; z-index: 20;
   background: var(--ink); color: var(--paper); padding: 12px 18px; border-radius: 8px;
   font-weight: 600; text-decoration: none;
 }
@@ -100,6 +110,7 @@ p { max-width: 68ch; }
   text-transform: uppercase;
   color: var(--accent);
 }
+:root[lang="ar"] .label { letter-spacing: 0; }
 
 /* ---------- header ---------- */
 body::before {
@@ -111,32 +122,45 @@ body::before {
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
-.top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; min-height: 68px; }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-height: 68px; }
 .mark {
   display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
-  font-family: var(--f-display); font-weight: 700; font-size: 1.2rem;
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; font-weight: 700; font-size: 1.2rem;
 }
 .mark b {
   display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px;
   background: var(--ink); color: var(--paper); font-size: 0.9rem;
 }
-.nav { display: flex; gap: 4px; margin-left: auto; }
+.nav { display: flex; gap: 4px; margin-inline-start: auto; }
 .nav a {
   text-decoration: none; color: var(--ink); font-size: 1.05rem; font-weight: 500;
   padding: 10px 12px; border-radius: 8px; min-height: 44px; display: inline-flex; align-items: center;
 }
 .nav a:hover { background: var(--sunk); text-decoration: underline; text-underline-offset: 4px; }
-.theme-btn {
+.tools { display: flex; gap: 8px; align-items: center; }
+.theme-btn, .lang-pick {
   border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-  height: 44px; padding: 0 14px; border-radius: 8px; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 8px; font: 500 1rem var(--f-body);
+  height: 44px; border-radius: 8px; font: 500 1rem var(--f-body);
 }
-.theme-btn svg { width: 18px; height: 18px; }
-@media (max-width: 860px) {
+.theme-btn { padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.theme-btn svg { width: 18px; height: 18px; flex: none; }
+.lang-pick { display: inline-flex; align-items: center; gap: 6px; padding-inline: 12px 4px; }
+.lang-pick svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.lang-pick select {
+  border: 0; background: transparent; color: var(--ink); font: 600 1rem var(--f-body);
+  height: 100%; padding-inline: 2px 8px; cursor: pointer;
+}
+.lang-pick select:focus-visible { outline: none; }
+.lang-pick:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 1020px) {
   .top .wrap { padding-block: 8px; }
-  .theme-btn { margin-left: auto; }
-  .nav { order: 3; width: 100%; margin-left: 0; overflow-x: auto; margin-inline: -12px; }
+  .tools { margin-inline-start: auto; }
+  .nav { order: 3; width: 100%; margin-inline: -12px; overflow-x: auto; }
   .nav a { white-space: nowrap; }
+}
+@media (max-width: 480px) {
+  .mark span { display: none; }
+  .theme-btn .theme-text { display: none; }
 }
 
 /* ---------- hero ---------- */
@@ -146,17 +170,18 @@ body::before {
 .hero-copy { min-width: 0; }
 .avail {
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 8px 16px 8px 14px; border-radius: 999px;
+  padding: 8px 16px; border-radius: 999px;
   background: var(--accent-soft); color: var(--accent);
   font-size: 1rem; font-weight: 600;
 }
-.avail i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.avail i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex: none; }
 .hero h1 {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   font-size: var(--step-5); font-weight: 800; letter-spacing: -0.03em;
   margin-top: 22px;
 }
 .hero h1 span { display: block; color: var(--accent); }
-.lede { font-size: var(--step-1); color: var(--muted); max-width: 34ch; margin: 22px 0 0; line-height: 1.5; }
+.lede { font-size: var(--step-1); color: var(--muted); max-width: 36ch; margin: 22px 0 0; line-height: 1.55; }
 .lede strong { color: var(--ink); font-weight: 600; }
 .ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 .btn {
@@ -169,32 +194,35 @@ body::before {
 .btn.ghost:hover { background: var(--sunk); }
 .btn.primary:hover { text-decoration: underline; text-underline-offset: 4px; }
 .btn svg { width: 18px; height: 18px; flex: none; }
+:root[dir="rtl"] .btn svg.ext, :root[dir="rtl"] .card-link svg { transform: scaleX(-1); }
 .meta-row { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 30px; color: var(--muted); font-size: 1.05rem; }
 
 /* console */
 .console {
-  min-width: 0;
+  min-width: 0; margin: 0;
   background: var(--console); color: var(--console-ink);
   border-radius: 14px; overflow: hidden;
   box-shadow: 0 30px 60px -30px rgba(10, 12, 30, .55);
-  font-family: var(--f-mono); font-size: 14px; line-height: 1.75;
 }
 .console-bar {
-  display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px;
-  border-bottom: 1px solid rgba(255,255,255,.1); color: var(--console-dim); font-size: 13px;
+  display: flex; align-items: center; gap: 12px; padding-block: 10px; padding-inline: 16px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.1); color: var(--console-dim); font: 13px var(--f-mono);
 }
 .console-bar .dots { display: flex; gap: 6px; }
 .console-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.2); }
 .pause {
-  margin-left: auto; display: inline-flex; align-items: center; gap: 8px;
+  margin-inline-start: auto; display: inline-flex; align-items: center; gap: 8px;
   min-height: 40px; padding: 0 14px; border-radius: 8px; cursor: pointer;
   background: rgba(255,255,255,.08); color: var(--console-ink); border: 1px solid rgba(255,255,255,.18);
   font: 500 14px var(--f-body);
 }
 .pause:hover { background: rgba(255,255,255,.14); }
 .pause svg { width: 14px; height: 14px; }
-.stream { height: 336px; overflow: hidden; padding: 12px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
-  mask-image: linear-gradient(to bottom, transparent 0, #000 18%); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%); }
+.stream {
+  height: 336px; overflow: hidden; padding: 12px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
+  font-family: var(--f-mono); font-size: 14px; line-height: 1.75; text-align: left;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%);
+}
 .ln { display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px; align-items: baseline; white-space: nowrap; animation: lnIn .4s ease both; }
 @keyframes lnIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .ln { animation: none; } }
@@ -205,13 +233,13 @@ body::before {
 .ln .msg em { font-style: normal; color: #fff; }
 .ln .crit { font-size: 12px; padding: 0 7px; border-radius: 4px; background: rgba(255,255,255,.1); color: var(--console-ink); }
 .ln .crit.hi { background: rgba(240,181,74,.22); color: var(--lv-warn); }
-.console-foot { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.1); color: var(--console-ink); font: 15px/1.5 var(--f-body); }
-@media (max-width: 520px) { .ln .t { display: none; } .ln { grid-template-columns: auto 1fr auto; } .stream { height: 300px; } .console { font-size: 13px; } }
+.console-foot { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.1); color: var(--console-ink); font: 15px/1.6 var(--f-body); }
+@media (max-width: 520px) { .ln .t { display: none; } .ln { grid-template-columns: auto 1fr auto; } .stream { height: 300px; font-size: 13px; } }
 
 /* ---------- sections ---------- */
 section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid var(--line); }
 .sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px 40px; margin-bottom: 36px; }
-.sec-head h2 { font-size: var(--step-3); font-weight: 700; letter-spacing: -0.02em; margin-top: 10px; }
+.sec-head h2 { font-size: var(--step-3); font-weight: 700; letter-spacing: calc(var(--track-tight) * .6); margin-top: 10px; }
 .sec-head p { max-width: 46ch; color: var(--muted); margin: 0; }
 
 /* filters */
@@ -223,7 +251,7 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
 }
 .chip:hover { border-color: var(--ink); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.chip .n { font-weight: 500; opacity: .8; margin-left: 6px; }
+.chip .n { font-weight: 500; opacity: .8; margin-inline-start: 6px; }
 
 /* projects */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
@@ -236,13 +264,13 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
 .card.feature { grid-column: span 2; }
 @media (max-width: 800px) { .card.feature { grid-column: auto; } }
 .origin { font-size: 0.95rem; font-weight: 600; color: var(--accent); }
-.card h3 { font-size: var(--step-2); font-weight: 700; letter-spacing: -0.01em; margin-top: -8px; }
+.card h3 { font-size: var(--step-2); font-weight: 700; letter-spacing: calc(var(--track-tight) * .4); margin-top: -8px; }
 .card p { margin: 0; color: var(--ink); }
 .facts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .facts-list li { background: var(--sunk); border-radius: 8px; padding: 6px 12px; font-size: 0.98rem; font-weight: 500; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .tags-label { font-size: 0.95rem; color: var(--muted); margin: 0 0 -6px; }
-.tags span { font-size: 0.95rem; padding: 4px 11px; border-radius: 6px; border: 1px solid var(--line); color: var(--ink); }
+.tags span { font-size: 0.95rem; padding: 4px 11px; border-radius: 6px; border: 1px solid var(--line); color: var(--ink); direction: ltr; }
 .card-link {
   display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
   min-height: 48px; padding: 10px 18px; border-radius: 10px;
@@ -250,18 +278,18 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
   font-weight: 600; font-size: 1.025rem; text-decoration: none;
 }
 .card-link:hover { background: var(--accent-soft); text-decoration: underline; text-underline-offset: 4px; }
-.card-link svg { width: 17px; height: 17px; }
-.card-link.off { border: 0; padding-left: 0; color: var(--muted); font-weight: 500; }
+.card-link svg { width: 17px; height: 17px; flex: none; }
+.card-link.off { border: 0; padding-inline-start: 0; color: var(--muted); font-weight: 500; }
 .bars { display: grid; gap: 9px; }
 .bar-title { font-weight: 600; margin-bottom: 10px; font-size: 1rem; }
 .bar { display: grid; grid-template-columns: minmax(9ch, auto) 1fr 4.5ch; gap: 12px; align-items: center; font-size: 0.98rem; }
 .bar .track { height: 12px; background: var(--sunk); border-radius: 6px; overflow: hidden; }
 .bar .fill { display: block; height: 100%; background: var(--accent); border-radius: 6px; }
-.bar .v { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bar .v { text-align: end; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* experience */
 .tl {
-  display: grid; grid-template-columns: 200px 1fr; gap: 12px 40px;
+  display: grid; grid-template-columns: 210px 1fr; gap: 12px 40px;
   padding-block: 30px; border-top: 1px solid var(--line);
 }
 .tl:last-child { border-bottom: 1px solid var(--line); }
@@ -270,7 +298,7 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
 .tl .when small { display: block; color: var(--muted); font-size: 1rem; font-weight: 500; }
 .tl h3 { font-size: var(--step-1); font-weight: 700; }
 .tl h3 span { display: block; color: var(--muted); font-family: var(--f-body); font-weight: 500; font-size: 1.1rem; margin-top: 4px; }
-.tl ul { margin: 12px 0 0; padding-left: 1.2em; max-width: 68ch; }
+.tl ul { margin: 12px 0 0; padding-inline-start: 1.2em; max-width: 68ch; }
 .tl li + li { margin-top: 6px; }
 .tl .tags { margin-top: 14px; }
 
@@ -283,7 +311,7 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
 /* about */
 .about { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(32px, 6vw, 80px); }
 @media (max-width: 860px) { .about { grid-template-columns: 1fr; } }
-.about .big { font-family: var(--f-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; margin: 14px 0 0; max-width: 28ch; }
+.about .big { font-family: var(--f-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); font-weight: 500; line-height: 1.35; letter-spacing: calc(var(--track-tight) * .3); margin: 14px 0 0; max-width: 28ch; }
 .about .big em { font-style: normal; color: var(--accent); }
 .about .body { margin-top: 22px; }
 .facts { display: grid; gap: 24px; align-content: start; }
@@ -293,7 +321,8 @@ section.block { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid va
 /* contact: fixed dark band in both themes */
 .contact { background: #12141c; color: #f1f2f6; border-top: 0; }
 .contact .label { color: #b9b3ff; }
-.contact h2 { font-size: var(--step-5); font-weight: 800; letter-spacing: -0.03em; margin-top: 16px; }
+.contact h2 { font-size: var(--step-5); font-weight: 800; letter-spacing: var(--track-tight); margin-top: 16px; line-height: 1.1; }
+:root[lang="ar"] .contact h2 { font-size: clamp(2.5rem, 1.4rem + 5vw, 5rem); line-height: 1.3; }
 .contact h2 span { color: #b9b3ff; }
 .contact p { color: #d5d8e3; max-width: 48ch; font-size: var(--step-1); }
 .links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
@@ -308,21 +337,33 @@ footer a { color: #f1f2f6; }
 </head>
 <body>
 
-<a class="skip" href="#work">Skip to projects</a>
+<a class="skip" href="#work" data-i18n="skip"></a>
 <header class="top">
   <div class="wrap">
-    <a class="mark" href="#top" aria-label="Skander Bedoui, back to top"><b>SB</b>Skander Bedoui</a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#work">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+    <a class="mark" href="#top" aria-label="Skander Bedoui"><b>SB</b><span>Skander Bedoui</span></a>
+    <nav class="nav" id="nav">
+      <a href="#work" data-i18n="nav.work"></a>
+      <a href="#experience" data-i18n="nav.exp"></a>
+      <a href="#skills" data-i18n="nav.skills"></a>
+      <a href="#about" data-i18n="nav.about"></a>
+      <a href="#contact" data-i18n="nav.contact"></a>
     </nav>
-    <button class="theme-btn" id="theme-btn" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      <span id="theme-label">Dark mode</span>
-    </button>
+    <div class="tools">
+      <label class="lang-pick">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.6 4 6 4 9.5s-1.4 6.9-4 9.5c-2.6-2.6-4-6-4-9.5s1.4-6.9 4-9.5z"/></svg>
+        <span class="sr" data-i18n="lang"></span>
+        <select id="lang-select">
+          <option value="fr" lang="fr">Français</option>
+          <option value="en" lang="en">English</option>
+          <option value="ar" lang="ar">العربية</option>
+          <option value="es" lang="es">Español</option>
+        </select>
+      </label>
+      <button class="theme-btn" id="theme-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <span class="theme-text" id="theme-label"></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -330,29 +371,29 @@ footer a { color: #f1f2f6; }
   <section class="hero">
     <div class="wrap">
       <div class="hero-copy">
-        <span class="avail"><i></i>Looking for a 6-month internship · Jan–Jun 2027</span>
-        <h1>Skander <span>Bedoui</span></h1>
-        <p class="lede">Software engineering student. I build <strong>websites and apps</strong> and <strong>practical AI tools</strong> that show where their answers come from.</p>
+        <span class="avail"><i></i><span data-i18n="hero.avail"></span></span>
+        <h1 dir="ltr" style="text-align:start">Skander <span>Bedoui</span></h1>
+        <p class="lede" data-i18n="hero.lede"></p>
         <div class="ctas">
-          <a class="btn primary" href="#work">See my projects
+          <a class="btn primary" href="#work"><span data-i18n="hero.cta1"></span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
-          <a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener">Open my CV (PDF)
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3h7v7M10 14 21 3M21 14v7H3V3h7"/></svg></a>
+          <a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener"><span data-i18n="hero.cta2"></span>
+            <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3h7v7M10 14 21 3M21 14v7H3V3h7"/></svg></a>
         </div>
-        <div class="meta-row"><span>MedTech, South Mediterranean University</span><span>Tunisia</span><span>Graduating in 2027</span></div>
+        <div class="meta-row"><span data-i18n="hero.meta1"></span><span data-i18n="hero.meta2"></span><span data-i18n="hero.meta3"></span></div>
       </div>
 
-      <figure class="console" style="margin:0">
+      <figure class="console">
         <div class="console-bar">
           <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span aria-hidden="true">skander.log</span>
           <button class="pause" id="pause" type="button" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="pause-icon"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-            <span id="pause-label">Pause</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="pause-icon"></svg>
+            <span id="pause-label"></span>
           </button>
         </div>
-        <div class="stream" id="stream" aria-hidden="true"></div>
-        <figcaption class="console-foot">A playful summary of my profile, written as a live system log. It's styled after my AI Logs project, which scores every log line from 1 to 10 by how urgent it is.</figcaption>
+        <div class="stream" id="stream" dir="ltr" aria-hidden="true"></div>
+        <figcaption class="console-foot" data-i18n="hero.cap"></figcaption>
       </figure>
     </div>
   </section>
@@ -361,12 +402,12 @@ footer a { color: #f1f2f6; }
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="label">Selected work</div>
-          <h2>Projects</h2>
+          <div class="label" data-i18n="work.eyebrow"></div>
+          <h2 data-i18n="work.title"></h2>
         </div>
-        <p>Internship work, university projects and things I built to learn. Where I measured a result, it's shown on the card.</p>
+        <p data-i18n="work.intro"></p>
       </div>
-      <p class="filters-label" id="filters-label">Show projects about:</p>
+      <p class="filters-label" id="filters-label" data-i18n="work.filter"></p>
       <div class="filters" role="group" aria-labelledby="filters-label" id="filters"></div>
       <div class="grid" id="grid"></div>
     </div>
@@ -376,40 +417,32 @@ footer a { color: #f1f2f6; }
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="label">Experience &amp; education</div>
-          <h2>Where I've worked and studied</h2>
+          <div class="label" data-i18n="exp.eyebrow"></div>
+          <h2 data-i18n="exp.title"></h2>
         </div>
       </div>
       <div class="timeline">
         <article class="tl">
-          <div class="when">Jun–Jul 2026<small>Internship</small></div>
+          <div class="when"><span data-i18n="exp1.when"></span><small data-i18n="exp1.type"></small></div>
           <div>
-            <h3>AI Software Engineering Intern <span>Sofia Technologies</span></h3>
-            <ul>
-              <li>Built a prototype that uses a language model, running on the company's own machines, to monitor and analyse application logs.</li>
-              <li>Built steps that find errors and warnings, look into likely causes and suggest fixes.</li>
-            </ul>
+            <h3><span style="display:inline;color:inherit;font:inherit;margin:0" data-i18n="exp1.title"></span> <span>Sofia Technologies</span></h3>
+            <ul><li data-i18n="exp1.b1"></li><li data-i18n="exp1.b2"></li></ul>
             <div class="tags"><span>React 18</span><span>Symfony 7</span><span>Ollama</span><span>Docker</span></div>
           </div>
         </article>
         <article class="tl">
-          <div class="when">2024<small>1 month</small></div>
+          <div class="when"><span>2024</span><small data-i18n="exp2.type"></small></div>
           <div>
-            <h3>Software Development Intern <span>ATB (Arab Tunisian Bank)</span></h3>
-            <ul>
-              <li>Built an inventory-management application to track items, quantities and anomalies, with statistics views.</li>
-              <li>Presented the application to the bank's IT team for evaluation.</li>
-            </ul>
+            <h3><span style="display:inline;color:inherit;font:inherit;margin:0" data-i18n="exp2.title"></span> <span>ATB (Arab Tunisian Bank)</span></h3>
+            <ul><li data-i18n="exp2.b1"></li><li data-i18n="exp2.b2"></li></ul>
             <div class="tags"><span>Java</span><span>JavaFX</span><span>FXML</span><span>MySQL</span><span>JDBC</span></div>
           </div>
         </article>
         <article class="tl">
-          <div class="when">Until 2027<small>Engineering degree</small></div>
+          <div class="when"><span data-i18n="exp3.when"></span><small data-i18n="exp3.type"></small></div>
           <div>
-            <h3>Software Engineering <span>MedTech, South Mediterranean University (SMU)</span></h3>
-            <ul>
-              <li>Course projects in AI engineering, distributed systems, machine learning and virtual reality.</li>
-            </ul>
+            <h3><span style="display:inline;color:inherit;font:inherit;margin:0" data-i18n="exp3.title"></span> <span>MedTech, South Mediterranean University (SMU)</span></h3>
+            <ul><li data-i18n="exp3.b1"></li></ul>
           </div>
         </article>
       </div>
@@ -420,16 +453,16 @@ footer a { color: #f1f2f6; }
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="label">Toolbox</div>
-          <h2>Skills</h2>
+          <div class="label" data-i18n="skills.eyebrow"></div>
+          <h2 data-i18n="skills.title"></h2>
         </div>
       </div>
       <div class="skills">
-        <div class="skill"><h3>Programming languages</h3><ul><li>Java</li><li>JavaScript and TypeScript</li><li>Python</li><li>C</li><li>SQL</li></ul></div>
-        <div class="skill"><h3>Websites and mobile apps</h3><ul><li>React and React Native</li><li>Vue.js</li><li>Symfony</li><li>Express.js</li><li>REST APIs</li></ul></div>
-        <div class="skill"><h3>Data and AI</h3><ul><li>Local language models (Ollama)</li><li>Search with cited sources (RAG)</li><li>Testing and scoring AI models</li><li>PostgreSQL, MySQL, MongoDB, Firebase</li></ul></div>
-        <div class="skill"><h3>Desktop and systems</h3><ul><li>JavaFX, FXML, JDBC</li><li>Docker</li><li>Linux</li></ul></div>
-        <div class="skill"><h3>Tools</h3><ul><li>Git</li><li>Postman</li><li>Selenium</li><li>Unity and Expo</li></ul></div>
+        <div class="skill"><h3 data-i18n="sk1.h"></h3><ul data-i18n="sk1.l"></ul></div>
+        <div class="skill"><h3 data-i18n="sk2.h"></h3><ul data-i18n="sk2.l"></ul></div>
+        <div class="skill"><h3 data-i18n="sk3.h"></h3><ul data-i18n="sk3.l"></ul></div>
+        <div class="skill"><h3 data-i18n="sk4.h"></h3><ul data-i18n="sk4.l"></ul></div>
+        <div class="skill"><h3 data-i18n="sk5.h"></h3><ul data-i18n="sk5.l"></ul></div>
       </div>
     </div>
   </section>
@@ -437,33 +470,30 @@ footer a { color: #f1f2f6; }
   <section class="block" id="about">
     <div class="wrap about">
       <div>
-        <div class="label">About me</div>
-        <p class="big">I like software that can <em>explain itself</em>: an answer with its source, an error with its likely cause, a model with its score.</p>
-        <p class="body">I'm a software engineering student at MedTech (South Mediterranean University) in Tunisia. I'm interested in software architecture, practical AI systems, and how software and computer systems work together. I've built desktop apps in JavaFX, web platforms in React and Symfony, and tools that run AI models locally.</p>
+        <div class="label" data-i18n="about.eyebrow"></div>
+        <p class="big" data-i18n="about.big"></p>
+        <p class="body" data-i18n="about.body"></p>
       </div>
       <div class="facts">
-        <div class="fact"><h3>What I'm looking for</h3><p>A six-month end-of-studies internship (PFE) starting January 2027, in full-stack development or applied AI.</p></div>
-        <div class="fact"><h3>Lions Club SMU Nation</h3><p>HR and event support: charity initiatives, internal coordination and logistics.</p></div>
-        <div class="fact"><h3>Student organizations</h3><p>Student-led activities, events and tech-community initiatives.</p></div>
+        <div class="fact"><h3 data-i18n="fact1.h"></h3><p data-i18n="fact1.p"></p></div>
+        <div class="fact"><h3>Lions Club SMU Nation</h3><p data-i18n="fact2.p"></p></div>
+        <div class="fact"><h3 data-i18n="fact3.h"></h3><p data-i18n="fact3.p"></p></div>
       </div>
     </div>
   </section>
 
   <section class="block contact" id="contact">
     <div class="wrap">
-      <div class="label">Contact</div>
-      <h2>Let's build<br>something <span>useful.</span></h2>
-      <p>I'm looking for an internship starting January 2027. You can see my code on GitHub or read my CV.</p>
-      <div class="links" id="links">
-        <a class="btn primary" href="https://github.com/skanbedoui" target="_blank" rel="noopener">My GitHub profile</a>
-        <a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener">My CV (PDF)</a>
-      </div>
+      <div class="label" data-i18n="contact.eyebrow"></div>
+      <h2 data-i18n="contact.title"></h2>
+      <p data-i18n="contact.p"></p>
+      <div class="links" id="links"></div>
       <div class="copy-note" id="copy-note" aria-live="polite"></div>
     </div>
   </section>
 </main>
 <footer>
-  <div class="wrap"><span>© 2026 Skander Bedoui</span><a href="#top">Back to top ↑</a></div>
+  <div class="wrap"><span>© 2026 Skander Bedoui</span><a href="#top" data-i18n="footer.top"></a></div>
 </footer>
 
 <script>
@@ -473,136 +503,343 @@ const CONTACT = {
   linkedin: "",   // e.g. "https://www.linkedin.com/in/your-handle"
 };
 
+/* ===== Translations. French is the default language. ===== */
+const T = {
+fr: {
+  "meta.desc": "Skander Bedoui : étudiant en génie logiciel, applications full-stack et outils d'IA concrets. Disponible pour un stage PFE de six mois, de janvier à juin 2027.",
+  "skip": "Aller aux projets",
+  "nav.work": "Projets", "nav.exp": "Expérience", "nav.skills": "Compétences", "nav.about": "À propos", "nav.contact": "Contact",
+  "nav.label": "Sections", "lang": "Langue",
+  "theme.toDark": "Mode sombre", "theme.toLight": "Mode clair",
+  "hero.avail": "Recherche un stage de 6 mois · janv.–juin 2027",
+  "hero.lede": "Étudiant en génie logiciel. Je crée des <strong>sites web et des applications</strong> et des <strong>outils d'IA concrets</strong> qui montrent d'où viennent leurs réponses.",
+  "hero.cta1": "Voir mes projets", "hero.cta2": "Ouvrir mon CV (PDF)",
+  "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Tunisie", "hero.meta3": "Diplômé en 2027",
+  "hero.cap": "Un résumé ludique de mon profil, écrit comme un journal système en direct. Il s'inspire de mon projet AI Logs, qui note chaque ligne de journal de 1 à 10 selon son urgence.",
+  "pause": "Pause", "play": "Lecture",
+  "work.eyebrow": "Travaux choisis", "work.title": "Projets",
+  "work.intro": "Des projets de stage, des projets universitaires et des projets personnels pour apprendre. Quand j'ai mesuré un résultat, il figure sur la fiche.",
+  "work.filter": "Afficher les projets :",
+  "f.all": "Tous les projets", "f.ai": "IA et données", "f.web": "Sites web et applications", "f.systems": "Bureau, systèmes et réalité virtuelle",
+  "card.built": "Réalisé avec :", "card.code": "Voir le code sur GitHub", "card.newtab": "(s'ouvre dans un nouvel onglet)",
+  "card.off": "Le code de ce projet n'est pas public.",
+  "exp.eyebrow": "Expérience et formation", "exp.title": "Mon parcours",
+  "exp1.when": "Juin–juil. 2026", "exp1.type": "Stage", "exp1.title": "Stagiaire en ingénierie logicielle IA",
+  "exp1.b1": "J'ai développé un prototype qui utilise un modèle de langage, hébergé sur les machines de l'entreprise, pour surveiller et analyser les journaux d'applications.",
+  "exp1.b2": "J'ai créé des étapes qui repèrent les erreurs et les avertissements, recherchent les causes probables et proposent des solutions.",
+  "exp2.type": "1 mois", "exp2.title": "Stagiaire en développement logiciel",
+  "exp2.b1": "J'ai développé une application de gestion de stock pour suivre les articles, les quantités et les anomalies, avec des vues statistiques.",
+  "exp2.b2": "J'ai présenté l'application à l'équipe informatique de la banque pour évaluation.",
+  "exp3.when": "Jusqu'en 2027", "exp3.type": "Diplôme d'ingénieur", "exp3.title": "Génie logiciel",
+  "exp3.b1": "Projets de cours en ingénierie de l'IA, systèmes distribués, apprentissage automatique et réalité virtuelle.",
+  "skills.eyebrow": "Boîte à outils", "skills.title": "Compétences",
+  "sk1.h": "Langages de programmation", "sk1.l": "<li>Java</li><li>JavaScript et TypeScript</li><li>Python</li><li>C</li><li>SQL</li>",
+  "sk2.h": "Sites web et applications mobiles", "sk2.l": "<li>React et React Native</li><li>Vue.js</li><li>Symfony</li><li>Express.js</li><li>API REST</li>",
+  "sk3.h": "Données et IA", "sk3.l": "<li>Modèles de langage locaux (Ollama)</li><li>Recherche avec sources citées (RAG)</li><li>Test et évaluation de modèles d'IA</li><li>PostgreSQL, MySQL, MongoDB, Firebase</li>",
+  "sk4.h": "Bureau et systèmes", "sk4.l": "<li>JavaFX, FXML, JDBC</li><li>Docker</li><li>Linux</li>",
+  "sk5.h": "Outils", "sk5.l": "<li>Git</li><li>Postman</li><li>Selenium</li><li>Unity et Expo</li>",
+  "about.eyebrow": "À propos",
+  "about.big": "J'aime les logiciels capables de <em>s'expliquer</em> : une réponse avec sa source, une erreur avec sa cause probable, un modèle avec son score.",
+  "about.body": "Je suis étudiant en génie logiciel à MedTech (South Mediterranean University), en Tunisie. Je m'intéresse à l'architecture logicielle, aux systèmes d'IA concrets et à la façon dont les logiciels et les systèmes informatiques fonctionnent ensemble. J'ai créé des applications de bureau en JavaFX, des plateformes web en React et Symfony, et des outils qui font tourner des modèles d'IA en local.",
+  "fact1.h": "Ce que je recherche", "fact1.p": "Un stage de fin d'études (PFE) de six mois à partir de janvier 2027, en développement full-stack ou en IA appliquée.",
+  "fact2.p": "Soutien RH et événementiel : actions caritatives, coordination interne et logistique.",
+  "fact3.h": "Associations étudiantes", "fact3.p": "Activités, événements et initiatives de la communauté tech, organisés par des étudiants.",
+  "contact.eyebrow": "Contact", "contact.title": "Construisons<br>quelque chose <span>d'utile.</span>",
+  "contact.p": "Je recherche un stage à partir de janvier 2027. Vous pouvez voir mon code sur GitHub ou lire mon CV.",
+  "contact.gh": "Mon profil GitHub", "contact.cv": "Mon CV (PDF)", "contact.li": "Mon profil LinkedIn",
+  "contact.copy": "Copier mon adresse e-mail", "contact.copied": "Copié : ", "contact.email": "E-mail : ",
+  "footer.top": "Retour en haut ↑",
+  p: {
+    ailogs: { origin: "Stage chez Sofia Technologies", text: "Une plateforme qui lit les journaux d'applications, signale les erreurs et les problèmes de sécurité, et note chaque entrée de 1 (routine) à 10 (urgent). Un modèle de langage exécuté en local rédige des résumés clairs de ce qui s'est passé.", facts: ["Lit 7 formats de journaux", "Score d'urgence de 1 à 10", "Flux de journaux en direct", "Alertes par e-mail"] },
+    librarian: { origin: "Projet universitaire", text: "Un assistant qui répond aux questions des étudiants de MedTech à partir de 14 documents officiels de l'école (127 pages). Il indique le document et la page derrière chaque réponse, et dit « je ne sais pas » quand les documents ne couvrent pas la question.", barLabel: "Fréquence à laquelle le bon passage arrive en premier (167 questions de test)", bars: ["Mots-clés", "Sens", "Combinée", "Reclassée"] },
+    legal: { title: "Banc d'essai de clauses juridiques", origin: "Projet universitaire", text: "Un test de trois modèles d'IA de tailles différentes, qui classent chacun des clauses de contrat dans l'une de 25 catégories. Avec une notation stricte, un tableau de bord des résultats et un rapport écrit.", barLabel: "Bonnes réponses sur 50 clauses de test", bars: ["Grand (8B)", "Moyen (3B)", "Petit (1B)"] },
+    grader: { origin: "Projet universitaire · en cours", text: "Un modèle d'IA relit un morceau de code et écrit un commentaire. Un second modèle juge ensuite si ce commentaire est correct et utile.", facts: ["112 exemples de test", "Code Python et JavaScript", "Suivi des coûts"] },
+    churn: { title: "Prédiction de l'attrition client", origin: "Projet universitaire", text: "Prédit quels clients risquent de quitter une entreprise, en comparant trois méthodes d'apprentissage automatique. La meilleure est choisie selon le nombre de départs qu'elle rate. Les résultats s'affichent dans un tableau de bord interactif.", facts: ["3 méthodes comparées", "Tableau de bord interactif"] },
+    workhive: { origin: "Projet", text: "Une application mobile qui met en relation des clients et des prestataires de services : connexion, liste des services, réservations, mises à jour en temps réel et écrans adaptés à chaque rôle." },
+    food: { origin: "Projet personnel", text: "Une application web de gestion de stock qui peut aussi s'installer sur un téléphone, avec son propre serveur et sa propre base de données." },
+    inventory: { title: "Système de gestion de stock", origin: "Stage chez ATB", text: "Une application de bureau pour suivre le stock, les quantités et les anomalies, avec des statistiques. Présentée à l'équipe informatique de la banque." },
+    sdm: { origin: "Projet universitaire", text: "Télécharge les gros fichiers plus vite en les découpant en parties téléchargées en même temps. On peut mettre en pause, reprendre ou annuler, et les parties qui échouent sont relancées automatiquement.", facts: ["Téléchargements en parallèle", "Pause et reprise", "Progression et temps restant en direct"] },
+    vr: { origin: "Projet universitaire", text: "Un musée en réalité virtuelle que l'on peut parcourir, avec des expositions interactives." }
+  }
+},
+en: {
+  "meta.desc": "Skander Bedoui: software engineering student building full-stack apps and practical AI tools. Available for a six-month PFE internship, January to June 2027.",
+  "skip": "Skip to projects",
+  "nav.work": "Projects", "nav.exp": "Experience", "nav.skills": "Skills", "nav.about": "About", "nav.contact": "Contact",
+  "nav.label": "Sections", "lang": "Language",
+  "theme.toDark": "Dark mode", "theme.toLight": "Light mode",
+  "hero.avail": "Looking for a 6-month internship · Jan–Jun 2027",
+  "hero.lede": "Software engineering student. I build <strong>websites and apps</strong> and <strong>practical AI tools</strong> that show where their answers come from.",
+  "hero.cta1": "See my projects", "hero.cta2": "Open my CV (PDF)",
+  "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Tunisia", "hero.meta3": "Graduating in 2027",
+  "hero.cap": "A playful summary of my profile, written as a live system log. It's styled after my AI Logs project, which scores every log line from 1 to 10 by how urgent it is.",
+  "pause": "Pause", "play": "Play",
+  "work.eyebrow": "Selected work", "work.title": "Projects",
+  "work.intro": "Internship work, university projects and things I built to learn. Where I measured a result, it's shown on the card.",
+  "work.filter": "Show projects about:",
+  "f.all": "All projects", "f.ai": "AI and data", "f.web": "Websites and apps", "f.systems": "Desktop, systems and VR",
+  "card.built": "Built with:", "card.code": "See the code on GitHub", "card.newtab": "(opens in a new tab)",
+  "card.off": "The code for this project isn't public.",
+  "exp.eyebrow": "Experience & education", "exp.title": "Where I've worked and studied",
+  "exp1.when": "Jun–Jul 2026", "exp1.type": "Internship", "exp1.title": "AI Software Engineering Intern",
+  "exp1.b1": "Built a prototype that uses a language model, running on the company's own machines, to monitor and analyse application logs.",
+  "exp1.b2": "Built steps that find errors and warnings, look into likely causes and suggest fixes.",
+  "exp2.type": "1 month", "exp2.title": "Software Development Intern",
+  "exp2.b1": "Built an inventory-management application to track items, quantities and anomalies, with statistics views.",
+  "exp2.b2": "Presented the application to the bank's IT team for evaluation.",
+  "exp3.when": "Until 2027", "exp3.type": "Engineering degree", "exp3.title": "Software Engineering",
+  "exp3.b1": "Course projects in AI engineering, distributed systems, machine learning and virtual reality.",
+  "skills.eyebrow": "Toolbox", "skills.title": "Skills",
+  "sk1.h": "Programming languages", "sk1.l": "<li>Java</li><li>JavaScript and TypeScript</li><li>Python</li><li>C</li><li>SQL</li>",
+  "sk2.h": "Websites and mobile apps", "sk2.l": "<li>React and React Native</li><li>Vue.js</li><li>Symfony</li><li>Express.js</li><li>REST APIs</li>",
+  "sk3.h": "Data and AI", "sk3.l": "<li>Local language models (Ollama)</li><li>Search with cited sources (RAG)</li><li>Testing and scoring AI models</li><li>PostgreSQL, MySQL, MongoDB, Firebase</li>",
+  "sk4.h": "Desktop and systems", "sk4.l": "<li>JavaFX, FXML, JDBC</li><li>Docker</li><li>Linux</li>",
+  "sk5.h": "Tools", "sk5.l": "<li>Git</li><li>Postman</li><li>Selenium</li><li>Unity and Expo</li>",
+  "about.eyebrow": "About me",
+  "about.big": "I like software that can <em>explain itself</em>: an answer with its source, an error with its likely cause, a model with its score.",
+  "about.body": "I'm a software engineering student at MedTech (South Mediterranean University) in Tunisia. I'm interested in software architecture, practical AI systems, and how software and computer systems work together. I've built desktop apps in JavaFX, web platforms in React and Symfony, and tools that run AI models locally.",
+  "fact1.h": "What I'm looking for", "fact1.p": "A six-month end-of-studies internship (PFE) starting January 2027, in full-stack development or applied AI.",
+  "fact2.p": "HR and event support: charity initiatives, internal coordination and logistics.",
+  "fact3.h": "Student organizations", "fact3.p": "Student-led activities, events and tech-community initiatives.",
+  "contact.eyebrow": "Contact", "contact.title": "Let's build<br>something <span>useful.</span>",
+  "contact.p": "I'm looking for an internship starting January 2027. You can see my code on GitHub or read my CV.",
+  "contact.gh": "My GitHub profile", "contact.cv": "My CV (PDF)", "contact.li": "My LinkedIn profile",
+  "contact.copy": "Copy my email address", "contact.copied": "Copied: ", "contact.email": "Email: ",
+  "footer.top": "Back to top ↑",
+  p: {
+    ailogs: { origin: "Internship at Sofia Technologies", text: "A platform that reads application logs, flags errors and security problems, and scores each entry from 1 (routine) to 10 (urgent). A language model running locally writes plain-language summaries of what went wrong.", facts: ["Reads 7 log formats", "Urgency score 1–10", "Live log feed", "Email alerts"] },
+    librarian: { origin: "University project", text: "A question-answering assistant for MedTech students. It answers from 14 official school documents (127 pages), shows the document and page behind each answer, and says \"I don't know\" when the documents don't cover it.", barLabel: "How often the right passage came first (167 test questions)", bars: ["Keyword", "Meaning", "Combined", "Re-ranked"] },
+    legal: { title: "Legal Clause Benchmark", origin: "University project", text: "A test of three AI models of different sizes, each sorting contract clauses into one of 25 categories. Includes strict scoring, a results dashboard and a written report.", barLabel: "Correct answers on 50 test clauses", bars: ["Large (8B)", "Medium (3B)", "Small (1B)"] },
+    grader: { origin: "University project · in progress", text: "One AI model reviews a piece of code and writes a comment. A second AI model then judges whether that comment is correct and useful.", facts: ["112 test examples", "Python and JavaScript code", "Cost tracking"] },
+    churn: { title: "Customer Churn Prediction", origin: "University project", text: "Predicts which customers are likely to leave a business, comparing three machine-learning methods. The best one is chosen by how few leaving customers it misses. Results are shown in an interactive dashboard.", facts: ["3 methods compared", "Interactive dashboard"] },
+    workhive: { origin: "Project", text: "A mobile app that connects customers with service providers: sign-in, service listings, bookings, real-time updates and separate screens for each role." },
+    food: { origin: "Personal project", text: "An inventory web app that can also be installed on a phone, with its own server and database." },
+    inventory: { title: "Inventory Management System", origin: "Internship at ATB", text: "A desktop application for tracking stock, quantities and anomalies, with statistics. Presented to the bank's IT team." },
+    sdm: { origin: "University project", text: "Downloads large files faster by splitting them into parts that download at the same time. You can pause, resume or cancel, and failed parts retry on their own.", facts: ["Parallel downloads", "Pause and resume", "Live progress and time left"] },
+    vr: { origin: "University project", text: "A virtual-reality museum you can walk through, with interactive exhibits." }
+  }
+},
+ar: {
+  "meta.desc": "Skander Bedoui: طالب في هندسة البرمجيات يطوّر تطبيقات شاملة وأدوات ذكاء اصطناعي عملية. متاح لتدريب نهاية الدراسات لمدة ستة أشهر من جانفي إلى جوان 2027.",
+  "skip": "انتقل إلى المشاريع",
+  "nav.work": "المشاريع", "nav.exp": "الخبرة", "nav.skills": "المهارات", "nav.about": "نبذة عني", "nav.contact": "تواصل",
+  "nav.label": "الأقسام", "lang": "اللغة",
+  "theme.toDark": "الوضع الداكن", "theme.toLight": "الوضع الفاتح",
+  "hero.avail": "أبحث عن تدريب لمدة 6 أشهر · جانفي–جوان 2027",
+  "hero.lede": "طالب في هندسة البرمجيات. أطوّر <strong>مواقع وتطبيقات</strong> و<strong>أدوات ذكاء اصطناعي عملية</strong> تُظهر مصدر إجاباتها.",
+  "hero.cta1": "شاهد مشاريعي", "hero.cta2": "افتح سيرتي الذاتية (PDF)",
+  "hero.meta1": "MedTech، South Mediterranean University", "hero.meta2": "تونس", "hero.meta3": "التخرّج في 2027",
+  "hero.cap": "ملخّص طريف لملفي مكتوب على شكل سجلّ نظام مباشر. وهو مستوحى من مشروعي AI Logs الذي يمنح كل سطر في السجلّ درجة من 1 إلى 10 حسب درجة الاستعجال.",
+  "pause": "إيقاف مؤقت", "play": "تشغيل",
+  "work.eyebrow": "أعمال مختارة", "work.title": "المشاريع",
+  "work.intro": "مشاريع تدريب ومشاريع جامعية وأشياء بنيتها لأتعلّم. عندما قستُ نتيجةً، تجدها على البطاقة.",
+  "work.filter": "اعرض المشاريع حسب:",
+  "f.all": "كل المشاريع", "f.ai": "الذكاء الاصطناعي والبيانات", "f.web": "المواقع والتطبيقات", "f.systems": "سطح المكتب والأنظمة والواقع الافتراضي",
+  "card.built": "التقنيات المستخدمة:", "card.code": "شاهد الشيفرة على GitHub", "card.newtab": "(تُفتح في علامة تبويب جديدة)",
+  "card.off": "شيفرة هذا المشروع غير منشورة.",
+  "exp.eyebrow": "الخبرة والتكوين", "exp.title": "أين عملت ودرست",
+  "exp1.when": "جوان–جويلية 2026", "exp1.type": "تدريب", "exp1.title": "متدرّب في هندسة برمجيات الذكاء الاصطناعي",
+  "exp1.b1": "طوّرت نموذجًا أوليًا يستخدم نموذجًا لغويًا يعمل على أجهزة الشركة لمراقبة سجلات التطبيقات وتحليلها.",
+  "exp1.b2": "بنيت مراحل تكتشف الأخطاء والتحذيرات، وتبحث عن أسبابها المحتملة، وتقترح حلولًا.",
+  "exp2.type": "شهر واحد", "exp2.title": "متدرّب في تطوير البرمجيات",
+  "exp2.b1": "طوّرت تطبيقًا لإدارة المخزون لتتبّع المواد والكميات والحالات غير العادية، مع عروض إحصائية.",
+  "exp2.b2": "قدّمت التطبيق لفريق الإعلامية في البنك لتقييمه.",
+  "exp3.when": "حتى 2027", "exp3.type": "شهادة مهندس", "exp3.title": "هندسة البرمجيات",
+  "exp3.b1": "مشاريع دراسية في هندسة الذكاء الاصطناعي، والأنظمة الموزّعة، وتعلّم الآلة، والواقع الافتراضي.",
+  "skills.eyebrow": "صندوق الأدوات", "skills.title": "المهارات",
+  "sk1.h": "لغات البرمجة", "sk1.l": "<li>Java</li><li>JavaScript و TypeScript</li><li>Python</li><li>C</li><li>SQL</li>",
+  "sk2.h": "المواقع وتطبيقات الهاتف", "sk2.l": "<li>React و React Native</li><li>Vue.js</li><li>Symfony</li><li>Express.js</li><li>واجهات REST البرمجية</li>",
+  "sk3.h": "البيانات والذكاء الاصطناعي", "sk3.l": "<li>نماذج لغوية محلية (Ollama)</li><li>بحث مع ذكر المصادر (RAG)</li><li>اختبار نماذج الذكاء الاصطناعي وتقييمها</li><li>PostgreSQL، MySQL، MongoDB، Firebase</li>",
+  "sk4.h": "سطح المكتب والأنظمة", "sk4.l": "<li>JavaFX، FXML، JDBC</li><li>Docker</li><li>Linux</li>",
+  "sk5.h": "الأدوات", "sk5.l": "<li>Git</li><li>Postman</li><li>Selenium</li><li>Unity و Expo</li>",
+  "about.eyebrow": "نبذة عني",
+  "about.big": "أحبّ البرمجيات التي <em>تشرح نفسها</em>: إجابة مع مصدرها، وخطأ مع سببه المحتمل، ونموذج مع نتيجته.",
+  "about.body": "أنا طالب في هندسة البرمجيات في MedTech ‏(South Mediterranean University) بتونس. تهمّني هندسة البرمجيات، وأنظمة الذكاء الاصطناعي العملية، وكيفية عمل البرمجيات والأنظمة الحاسوبية معًا. طوّرت تطبيقات سطح مكتب بـ JavaFX، ومنصات ويب بـ React و Symfony، وأدوات تشغّل نماذج الذكاء الاصطناعي محليًا.",
+  "fact1.h": "ما أبحث عنه", "fact1.p": "تدريب نهاية الدراسات (PFE) لمدة ستة أشهر ابتداءً من جانفي 2027، في التطوير الشامل (Full-stack) أو الذكاء الاصطناعي التطبيقي.",
+  "fact2.p": "دعم في الموارد البشرية وتنظيم الفعاليات: مبادرات خيرية وتنسيق داخلي ولوجستيك.",
+  "fact3.h": "المنظمات الطلابية", "fact3.p": "أنشطة وفعاليات ومبادرات لمجتمع التكنولوجيا يقودها الطلبة.",
+  "contact.eyebrow": "تواصل", "contact.title": "لنبنِ معًا<br>شيئًا <span>مفيدًا.</span>",
+  "contact.p": "أبحث عن تدريب ابتداءً من جانفي 2027. يمكنك الاطلاع على شيفرتي في GitHub أو قراءة سيرتي الذاتية.",
+  "contact.gh": "حسابي على GitHub", "contact.cv": "سيرتي الذاتية (PDF)", "contact.li": "حسابي على LinkedIn",
+  "contact.copy": "انسخ بريدي الإلكتروني", "contact.copied": "تم النسخ: ", "contact.email": "البريد الإلكتروني: ",
+  "footer.top": "العودة إلى الأعلى ↑",
+  p: {
+    ailogs: { origin: "تدريب في Sofia Technologies", text: "منصة تقرأ سجلات التطبيقات، وتنبّه إلى الأخطاء ومشاكل الأمان، وتمنح كل سطر درجة من 1 (عادي) إلى 10 (عاجل). ويكتب نموذج لغوي يعمل محليًا ملخّصات واضحة لما حدث.", facts: ["يقرأ 7 صيغ للسجلات", "درجة استعجال من 1 إلى 10", "بثّ مباشر للسجلات", "تنبيهات بالبريد الإلكتروني"] },
+    librarian: { origin: "مشروع جامعي", text: "مساعد يجيب عن أسئلة طلبة MedTech انطلاقًا من 14 وثيقة رسمية للمدرسة (127 صفحة). يذكر الوثيقة والصفحة وراء كل إجابة، ويقول «لا أعرف» عندما لا تغطي الوثائق السؤال.", barLabel: "كم مرة جاء المقطع الصحيح أولًا (167 سؤال اختبار)", bars: ["الكلمات المفتاحية", "المعنى", "البحث المدمج", "بعد إعادة الترتيب"] },
+    legal: { title: "اختبار تصنيف البنود القانونية", origin: "مشروع جامعي", text: "اختبار لثلاثة نماذج ذكاء اصطناعي بأحجام مختلفة، يصنّف كل منها بنود العقود ضمن واحدة من 25 فئة. مع تقييم صارم ولوحة نتائج وتقرير مكتوب.", barLabel: "الإجابات الصحيحة على 50 بندًا تجريبيًا", bars: ["كبير (8B)", "متوسط (3B)", "صغير (1B)"] },
+    grader: { origin: "مشروع جامعي · قيد الإنجاز", text: "نموذج ذكاء اصطناعي يراجع جزءًا من الشيفرة ويكتب تعليقًا، ثم يحكم نموذج ثانٍ إن كان هذا التعليق صحيحًا ومفيدًا.", facts: ["112 مثال اختبار", "شيفرة Python و JavaScript", "تتبّع التكلفة"] },
+    churn: { title: "التنبؤ بمغادرة العملاء", origin: "مشروع جامعي", text: "يتنبأ بالعملاء الذين يُرجَّح أن يغادروا شركةً ما، بمقارنة ثلاث طرق لتعلّم الآلة. تُختار الطريقة الأفضل حسب قلّة العملاء المغادرين الذين تفوّتهم. وتُعرض النتائج في لوحة تفاعلية.", facts: ["مقارنة 3 طرق", "لوحة تفاعلية"] },
+    workhive: { origin: "مشروع", text: "تطبيق هاتف يربط العملاء بمقدّمي الخدمات: تسجيل الدخول، وقائمة الخدمات، والحجوزات، وتحديثات فورية، وشاشات خاصة بكل دور." },
+    food: { origin: "مشروع شخصي", text: "تطبيق ويب لإدارة المخزون يمكن تثبيته أيضًا على الهاتف، مع خادم وقاعدة بيانات خاصين به." },
+    inventory: { title: "نظام إدارة المخزون", origin: "تدريب في ATB", text: "تطبيق سطح مكتب لمتابعة المخزون والكميات والحالات غير العادية، مع إحصائيات. قُدّم لفريق الإعلامية في البنك." },
+    sdm: { origin: "مشروع جامعي", text: "يحمّل الملفات الكبيرة بسرعة أكبر بتقسيمها إلى أجزاء تُحمَّل في الوقت نفسه. يمكنك الإيقاف المؤقت والاستئناف والإلغاء، وتُعاد محاولة الأجزاء الفاشلة تلقائيًا.", facts: ["تحميل متوازٍ", "إيقاف مؤقت واستئناف", "التقدّم والوقت المتبقي مباشرة"] },
+    vr: { origin: "مشروع جامعي", text: "متحف في الواقع الافتراضي يمكنك التجوّل فيه، مع معروضات تفاعلية." }
+  }
+},
+es: {
+  "meta.desc": "Skander Bedoui: estudiante de ingeniería de software que crea aplicaciones full-stack y herramientas de IA prácticas. Disponible para unas prácticas PFE de seis meses, de enero a junio de 2027.",
+  "skip": "Ir a los proyectos",
+  "nav.work": "Proyectos", "nav.exp": "Experiencia", "nav.skills": "Habilidades", "nav.about": "Sobre mí", "nav.contact": "Contacto",
+  "nav.label": "Secciones", "lang": "Idioma",
+  "theme.toDark": "Modo oscuro", "theme.toLight": "Modo claro",
+  "hero.avail": "Busco prácticas de 6 meses · ene.–jun. 2027",
+  "hero.lede": "Estudiante de ingeniería de software. Creo <strong>sitios web y aplicaciones</strong> y <strong>herramientas de IA prácticas</strong> que muestran de dónde salen sus respuestas.",
+  "hero.cta1": "Ver mis proyectos", "hero.cta2": "Abrir mi CV (PDF)",
+  "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Túnez", "hero.meta3": "Me gradúo en 2027",
+  "hero.cap": "Un resumen divertido de mi perfil, escrito como un registro del sistema en directo. Está inspirado en mi proyecto AI Logs, que puntúa cada línea de registro del 1 al 10 según su urgencia.",
+  "pause": "Pausa", "play": "Reproducir",
+  "work.eyebrow": "Trabajo seleccionado", "work.title": "Proyectos",
+  "work.intro": "Trabajo de prácticas, proyectos universitarios y cosas que construí para aprender. Cuando medí un resultado, aparece en la tarjeta.",
+  "work.filter": "Mostrar proyectos de:",
+  "f.all": "Todos los proyectos", "f.ai": "IA y datos", "f.web": "Sitios web y aplicaciones", "f.systems": "Escritorio, sistemas y realidad virtual",
+  "card.built": "Hecho con:", "card.code": "Ver el código en GitHub", "card.newtab": "(se abre en una pestaña nueva)",
+  "card.off": "El código de este proyecto no es público.",
+  "exp.eyebrow": "Experiencia y formación", "exp.title": "Dónde he trabajado y estudiado",
+  "exp1.when": "Jun.–jul. 2026", "exp1.type": "Prácticas", "exp1.title": "Becario de ingeniería de software de IA",
+  "exp1.b1": "Desarrollé un prototipo que usa un modelo de lenguaje, alojado en los equipos de la empresa, para supervisar y analizar los registros de aplicaciones.",
+  "exp1.b2": "Creé pasos que detectan errores y advertencias, investigan las causas probables y sugieren soluciones.",
+  "exp2.type": "1 mes", "exp2.title": "Becario de desarrollo de software",
+  "exp2.b1": "Desarrollé una aplicación de gestión de inventario para controlar artículos, cantidades y anomalías, con vistas estadísticas.",
+  "exp2.b2": "Presenté la aplicación al equipo de informática del banco para su evaluación.",
+  "exp3.when": "Hasta 2027", "exp3.type": "Título de ingeniería", "exp3.title": "Ingeniería de software",
+  "exp3.b1": "Proyectos de curso en ingeniería de IA, sistemas distribuidos, aprendizaje automático y realidad virtual.",
+  "skills.eyebrow": "Caja de herramientas", "skills.title": "Habilidades",
+  "sk1.h": "Lenguajes de programación", "sk1.l": "<li>Java</li><li>JavaScript y TypeScript</li><li>Python</li><li>C</li><li>SQL</li>",
+  "sk2.h": "Sitios web y apps móviles", "sk2.l": "<li>React y React Native</li><li>Vue.js</li><li>Symfony</li><li>Express.js</li><li>APIs REST</li>",
+  "sk3.h": "Datos e IA", "sk3.l": "<li>Modelos de lenguaje locales (Ollama)</li><li>Búsqueda con fuentes citadas (RAG)</li><li>Pruebas y evaluación de modelos de IA</li><li>PostgreSQL, MySQL, MongoDB, Firebase</li>",
+  "sk4.h": "Escritorio y sistemas", "sk4.l": "<li>JavaFX, FXML, JDBC</li><li>Docker</li><li>Linux</li>",
+  "sk5.h": "Herramientas", "sk5.l": "<li>Git</li><li>Postman</li><li>Selenium</li><li>Unity y Expo</li>",
+  "about.eyebrow": "Sobre mí",
+  "about.big": "Me gusta el software que sabe <em>explicarse</em>: una respuesta con su fuente, un error con su causa probable, un modelo con su puntuación.",
+  "about.body": "Soy estudiante de ingeniería de software en MedTech (South Mediterranean University), en Túnez. Me interesan la arquitectura de software, los sistemas de IA prácticos y cómo funcionan juntos el software y los sistemas informáticos. He creado aplicaciones de escritorio con JavaFX, plataformas web con React y Symfony, y herramientas que ejecutan modelos de IA en local.",
+  "fact1.h": "Lo que busco", "fact1.p": "Unas prácticas de fin de carrera (PFE) de seis meses a partir de enero de 2027, en desarrollo full-stack o IA aplicada.",
+  "fact2.p": "Apoyo en RR. HH. y eventos: iniciativas benéficas, coordinación interna y logística.",
+  "fact3.h": "Organizaciones estudiantiles", "fact3.p": "Actividades, eventos e iniciativas de la comunidad tecnológica organizadas por estudiantes.",
+  "contact.eyebrow": "Contacto", "contact.title": "Construyamos<br>algo <span>útil.</span>",
+  "contact.p": "Busco prácticas a partir de enero de 2027. Puedes ver mi código en GitHub o leer mi CV.",
+  "contact.gh": "Mi perfil de GitHub", "contact.cv": "Mi CV (PDF)", "contact.li": "Mi perfil de LinkedIn",
+  "contact.copy": "Copiar mi correo electrónico", "contact.copied": "Copiado: ", "contact.email": "Correo: ",
+  "footer.top": "Volver arriba ↑",
+  p: {
+    ailogs: { origin: "Prácticas en Sofia Technologies", text: "Una plataforma que lee los registros de aplicaciones, señala errores y problemas de seguridad, y puntúa cada entrada del 1 (rutina) al 10 (urgente). Un modelo de lenguaje que se ejecuta en local escribe resúmenes claros de lo que falló.", facts: ["Lee 7 formatos de registro", "Urgencia del 1 al 10", "Registros en directo", "Alertas por correo"] },
+    librarian: { origin: "Proyecto universitario", text: "Un asistente que responde preguntas de los estudiantes de MedTech a partir de 14 documentos oficiales de la escuela (127 páginas). Muestra el documento y la página de cada respuesta, y dice «no lo sé» cuando los documentos no cubren la pregunta.", barLabel: "Con qué frecuencia el pasaje correcto salió primero (167 preguntas de prueba)", bars: ["Palabras clave", "Significado", "Combinada", "Reordenada"] },
+    legal: { title: "Evaluación de cláusulas legales", origin: "Proyecto universitario", text: "Una prueba de tres modelos de IA de distintos tamaños, que clasifican cláusulas de contratos en una de 25 categorías. Incluye puntuación estricta, un panel de resultados y un informe escrito.", barLabel: "Respuestas correctas en 50 cláusulas de prueba", bars: ["Grande (8B)", "Mediano (3B)", "Pequeño (1B)"] },
+    grader: { origin: "Proyecto universitario · en curso", text: "Un modelo de IA revisa un fragmento de código y escribe un comentario. Después, un segundo modelo juzga si ese comentario es correcto y útil.", facts: ["112 ejemplos de prueba", "Código Python y JavaScript", "Control de costes"] },
+    churn: { title: "Predicción de abandono de clientes", origin: "Proyecto universitario", text: "Predice qué clientes es probable que dejen una empresa, comparando tres métodos de aprendizaje automático. Se elige el mejor según cuántos abandonos deja escapar. Los resultados se muestran en un panel interactivo.", facts: ["3 métodos comparados", "Panel interactivo"] },
+    workhive: { origin: "Proyecto", text: "Una aplicación móvil que conecta a clientes con proveedores de servicios: inicio de sesión, lista de servicios, reservas, actualizaciones en tiempo real y pantallas para cada rol." },
+    food: { origin: "Proyecto personal", text: "Una aplicación web de inventario que también se puede instalar en el móvil, con su propio servidor y base de datos." },
+    inventory: { title: "Sistema de gestión de inventario", origin: "Prácticas en ATB", text: "Una aplicación de escritorio para controlar existencias, cantidades y anomalías, con estadísticas. Presentada al equipo de informática del banco." },
+    sdm: { origin: "Proyecto universitario", text: "Descarga archivos grandes más rápido dividiéndolos en partes que se descargan a la vez. Puedes pausar, reanudar o cancelar, y las partes que fallan se reintentan solas.", facts: ["Descargas en paralelo", "Pausa y reanudación", "Progreso y tiempo restante en directo"] },
+    vr: { origin: "Proyecto universitario", text: "Un museo de realidad virtual que puedes recorrer, con exposiciones interactivas." }
+  }
+}
+};
+
 const GH = "https://github.com/skanbedoui/";
 const PROJECTS = [
-  {
-    title: "AI Logs", area: "ai", origin: "Internship at Sofia Technologies", feature: true,
-    text: "A platform that reads application logs, flags errors and security problems, and scores each entry from 1 (routine) to 10 (urgent). A language model running locally writes plain-language summaries of what went wrong.",
-    facts: ["Reads 7 log formats", "Urgency score 1–10", "Live log feed", "Email alerts"],
-    tags: ["React 18", "TypeScript", "Symfony 7.4", "PostgreSQL", "Ollama", "Docker"],
-    repo: "Problem-Detection-With-AI"
-  },
-  {
-    title: "The Librarian", area: "ai", origin: "University project",
-    text: "A question-answering assistant for MedTech students. It answers from 14 official school documents (127 pages), shows the document and page behind each answer, and says \"I don't know\" when the documents don't cover it.",
-    bars: [["Keyword", 0.86], ["Meaning", 0.75], ["Combined", 0.83], ["Re-ranked", 0.89]],
-    barLabel: "How often the right passage came first (167 test questions)",
-    tags: ["Python", "Streamlit", "RAG"],
-    repo: "Librarian-AI"
-  },
-  {
-    title: "Legal Clause Benchmark", area: "ai", origin: "University project",
-    text: "A test of three AI models of different sizes, each sorting contract clauses into one of 25 categories. Includes strict scoring, a results dashboard and a written report.",
-    bars: [["Large (8B)", 1.0], ["Medium (3B)", 0.78], ["Small (1B)", 0.10]],
-    barLabel: "Correct answers on 50 test clauses",
-    tags: ["Python", "Ollama", "Llama 3"],
-    repo: "peoject-AI-engineering"
-  },
-  {
-    title: "AI-Grader", area: "ai", origin: "University project · in progress",
-    text: "One AI model reviews a piece of code and writes a comment. A second AI model then judges whether that comment is correct and useful.",
-    facts: ["112 test examples", "Python and JavaScript code", "Cost tracking"],
-    tags: ["Python", "Ollama", "OpenAI API"],
-    repo: "AI-Grader"
-  },
-  {
-    title: "Customer Churn Prediction", area: "ai", origin: "University project",
-    text: "Predicts which customers are likely to leave a business, comparing three machine-learning methods. The best one is chosen by how few leaving customers it misses. Results are shown in an interactive dashboard.",
-    facts: ["3 methods compared", "Interactive dashboard"],
-    tags: ["Python", "Jupyter", "Streamlit"],
-    repo: "New-project"
-  },
-  {
-    title: "WorkHive", area: "web", origin: "Project",
-    text: "A mobile app that connects customers with service providers: sign-in, service listings, bookings, real-time updates and separate screens for each role.",
-    tags: ["React Native", "Expo", "Firebase"],
-    repo: null
-  },
-  {
-    title: "Food Inventory", area: "web", origin: "Personal project",
-    text: "An inventory web app that can also be installed on a phone, with its own server and database.",
-    tags: ["Node.js", "MongoDB", "Capacitor", "Docker"],
-    repo: "FOOD_INVENTORY"
-  },
-  {
-    title: "Inventory Management System", area: "systems", origin: "Internship at ATB",
-    text: "A desktop application for tracking stock, quantities and anomalies, with statistics. Presented to the bank's IT team.",
-    tags: ["Java", "JavaFX", "MySQL", "JDBC"],
-    repo: null
-  },
-  {
-    title: "Simple Download Manager", area: "systems", origin: "University project",
-    text: "Downloads large files faster by splitting them into parts that download at the same time. You can pause, resume or cancel, and failed parts retry on their own.",
-    facts: ["Parallel downloads", "Pause and resume", "Live progress and time left"],
-    tags: ["Python", "Flask"],
-    repo: "DISTRIBUTED"
-  },
-  {
-    title: "Orange VR Museum", area: "systems", origin: "University project",
-    text: "A virtual-reality museum you can walk through, with interactive exhibits.",
-    tags: ["Unity", "C#", "Virtual reality"],
-    repo: "VR-Museum"
-  }
+  { id: "ailogs", title: "AI Logs", area: "ai", feature: true, tags: ["React 18", "TypeScript", "Symfony 7.4", "PostgreSQL", "Ollama", "Docker"], repo: "Problem-Detection-With-AI" },
+  { id: "librarian", title: "The Librarian", area: "ai", values: [0.86, 0.75, 0.83, 0.89], tags: ["Python", "Streamlit", "RAG"], repo: "Librarian-AI" },
+  { id: "legal", area: "ai", values: [1.0, 0.78, 0.10], tags: ["Python", "Ollama", "Llama 3"], repo: "peoject-AI-engineering" },
+  { id: "grader", title: "AI-Grader", area: "ai", tags: ["Python", "Ollama", "OpenAI API"], repo: "AI-Grader" },
+  { id: "churn", area: "ai", tags: ["Python", "Jupyter", "Streamlit"], repo: "New-project" },
+  { id: "workhive", title: "WorkHive", area: "web", tags: ["React Native", "Expo", "Firebase"], repo: null },
+  { id: "food", title: "Food Inventory", area: "web", tags: ["Node.js", "MongoDB", "Capacitor", "Docker"], repo: "FOOD_INVENTORY" },
+  { id: "inventory", area: "systems", tags: ["Java", "JavaFX", "MySQL", "JDBC"], repo: null },
+  { id: "sdm", title: "Simple Download Manager", area: "systems", tags: ["Python", "Flask"], repo: "DISTRIBUTED" },
+  { id: "vr", title: "Orange VR Museum", area: "systems", tags: ["Unity", "C#", "XR"], repo: "VR-Museum" }
 ];
-const AREAS = [["all", "All projects"], ["ai", "AI and data"], ["web", "Websites and apps"], ["systems", "Desktop, systems and VR"]];
+const AREAS = ["all", "ai", "web", "systems"];
+const LANGS = ["fr", "en", "ar", "es"];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 
-function card(p) {
-  const bars = p.bars ? `<div><div class="bar-title">${esc(p.barLabel)}</div><div class="bars">${
-    p.bars.map(([k, v]) => `<div class="bar"><span>${esc(k)}</span><span class="track"><span class="fill" style="width:${v * 100}%"></span></span><span class="v">${Math.round(v * 100)}%</span></div>`).join("")
+let lang = "fr";
+let area = "all";
+const root = document.documentElement;
+const grid = document.getElementById("grid");
+const filters = document.getElementById("filters");
+const links = document.getElementById("links");
+const note = document.getElementById("copy-note");
+
+function card(p, t) {
+  const d = t.p[p.id];
+  const title = d.title || p.title;
+  const bars = p.values ? `<div><div class="bar-title">${esc(d.barLabel)}</div><div class="bars">${
+    p.values.map((v, k) => `<div class="bar"><span>${esc(d.bars[k])}</span><span class="track"><span class="fill" style="width:${v * 100}%"></span></span><span class="v" dir="ltr">${Math.round(v * 100)}%</span></div>`).join("")
   }</div></div>` : "";
-  const facts = p.facts ? `<ul class="facts-list">${p.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : "";
+  const facts = d.facts ? `<ul class="facts-list">${d.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : "";
   const link = p.repo
-    ? `<a class="card-link" href="${GH + p.repo}" target="_blank" rel="noopener">See the code on GitHub ${ARROW}<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"> for ${esc(p.title)} (opens in a new tab)</span></a>`
-    : `<span class="card-link off">The code for this project isn't public.</span>`;
-  return `<article class="card${p.feature ? " feature" : ""}" data-area="${p.area}">
-    <div class="origin">${esc(p.origin)}</div>
-    <h3>${esc(p.title)}</h3>
-    <p>${esc(p.text)}</p>${facts}${bars}
-    <p class="tags-label">Built with:</p>
-    <div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+    ? `<a class="card-link" href="${GH + p.repo}" target="_blank" rel="noopener">${esc(t["card.code"])} ${ARROW}<span class="sr"> — ${esc(title)} ${esc(t["card.newtab"])}</span></a>`
+    : `<span class="card-link off">${esc(t["card.off"])}</span>`;
+  return `<article class="card${p.feature ? " feature" : ""}" data-area="${p.area}"${area === "all" || area === p.area ? "" : " hidden"}>
+    <div class="origin">${esc(d.origin)}</div>
+    <h3>${esc(title)}</h3>
+    <p>${esc(d.text)}</p>${facts}${bars}
+    <p class="tags-label">${esc(t["card.built"])}</p>
+    <div class="tags">${p.tags.map(x => `<span>${esc(x)}</span>`).join("")}</div>
     ${link}
   </article>`;
 }
 
-const grid = document.getElementById("grid");
-const filters = document.getElementById("filters");
-grid.innerHTML = PROJECTS.map(card).join("");
-filters.innerHTML = AREAS.map(([k, label]) => {
-  const n = k === "all" ? PROJECTS.length : PROJECTS.filter(p => p.area === k).length;
-  return `<button type="button" class="chip" id="f-${k}" data-k="${k}" aria-pressed="${k === "all"}">${label}<span class="n">(${n})</span></button>`;
-}).join("");
+function renderProjects(t) {
+  grid.innerHTML = PROJECTS.map(p => card(p, t)).join("");
+  filters.innerHTML = AREAS.map(k => {
+    const n = k === "all" ? PROJECTS.length : PROJECTS.filter(p => p.area === k).length;
+    return `<button type="button" class="chip" id="f-${k}" data-k="${k}" aria-pressed="${k === area}">${esc(t["f." + k])}<span class="n">(${n})</span></button>`;
+  }).join("");
+}
 filters.addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
-  filters.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b));
-  grid.querySelectorAll(".card").forEach(c => { c.hidden = !(b.dataset.k === "all" || c.dataset.area === b.dataset.k); });
+  area = b.dataset.k;
+  filters.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+  grid.querySelectorAll(".card").forEach(c => { c.hidden = !(area === "all" || c.dataset.area === area); });
 });
 
-/* contact extras */
-const links = document.getElementById("links");
-const note = document.getElementById("copy-note");
-if (CONTACT.linkedin) links.insertAdjacentHTML("beforeend", `<a class="btn ghost" href="${esc(CONTACT.linkedin)}" target="_blank" rel="noopener">My LinkedIn profile</a>`);
-if (CONTACT.email) {
-  links.insertAdjacentHTML("afterbegin", `<button type="button" class="btn primary" id="copy-email">Copy my email address</button>`);
-  links.querySelector("a.btn.primary").classList.replace("primary", "ghost");
-  note.textContent = "Email: " + CONTACT.email;
-  document.getElementById("copy-email").addEventListener("click", () => {
+function renderContact(t) {
+  let html = "";
+  if (CONTACT.email) html += `<button type="button" class="btn primary" id="copy-email">${esc(t["contact.copy"])}</button>`;
+  html += `<a class="btn ${CONTACT.email ? "ghost" : "primary"}" href="https://github.com/skanbedoui" target="_blank" rel="noopener">${esc(t["contact.gh"])}</a>`;
+  if (CONTACT.linkedin) html += `<a class="btn ghost" href="${esc(CONTACT.linkedin)}" target="_blank" rel="noopener">${esc(t["contact.li"])}</a>`;
+  html += `<a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener">${esc(t["contact.cv"])}</a>`;
+  links.innerHTML = html;
+  note.textContent = CONTACT.email ? t["contact.email"] + CONTACT.email : "";
+  const copyBtn = document.getElementById("copy-email");
+  if (copyBtn) copyBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(CONTACT.email)
-      .then(() => { note.textContent = "Copied: " + CONTACT.email; })
-      .catch(() => { note.textContent = "Email: " + CONTACT.email; });
+      .then(() => { note.textContent = T[lang]["contact.copied"] + CONTACT.email; })
+      .catch(() => { note.textContent = T[lang]["contact.email"] + CONTACT.email; });
   });
 }
 
+function setLang(next, save) {
+  lang = LANGS.includes(next) ? next : "fr";
+  const t = T[lang];
+  root.lang = lang;
+  root.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = t[el.dataset.i18n]; });
+  document.getElementById("nav").setAttribute("aria-label", t["nav.label"]);
+  const md = document.querySelector('meta[name="description"]'); if (md) md.content = t["meta.desc"];
+  document.getElementById("lang-select").value = lang;
+  renderProjects(t);
+  renderContact(t);
+  syncThemeLabel();
+  syncPauseLabel();
+  if (save) { try { localStorage.setItem("sb-lang", lang); } catch (e) {} }
+}
+document.getElementById("lang-select").addEventListener("change", e => setLang(e.target.value, true));
+
 /* theme toggle */
-const root = document.documentElement;
 const themeLabel = document.getElementById("theme-label");
+const themeBtn = document.getElementById("theme-btn");
 const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-const syncThemeLabel = () => { themeLabel.textContent = isDark() ? "Light mode" : "Dark mode"; };
-try { const t = localStorage.getItem("sb-theme"); if (t) root.dataset.theme = t; } catch (e) {}
-syncThemeLabel();
-document.getElementById("theme-btn").addEventListener("click", () => {
+function syncThemeLabel() {
+  const txt = T[lang][isDark() ? "theme.toLight" : "theme.toDark"];
+  themeLabel.textContent = txt;
+  themeBtn.setAttribute("aria-label", txt);
+}
+try { const th = localStorage.getItem("sb-theme"); if (th) root.dataset.theme = th; } catch (e) {}
+themeBtn.addEventListener("click", () => {
   root.dataset.theme = isDark() ? "light" : "dark";
   syncThemeLabel();
   try { localStorage.setItem("sb-theme", root.dataset.theme); } catch (e) {}
@@ -617,7 +854,7 @@ const LINES = [
   ["DEBUG", "benchmark.clauses large=100% small=10%", 2],
   ["INFO", "internship.done org=Sofia_Technologies", 3],
   ["INFO", "internship.done org=ATB year=2024", 3],
-  ["WARN", "availability <em>Jan–Jun 2027</em> status=open", 8],
+  ["WARN", "availability <em>2027-01..2027-06</em> status=open", 8],
   ["INFO", "downloader.run parts=8 resume=ok", 2],
   ["INFO", "vr-museum.build engine=unity", 2],
   ["INFO", "grader.run examples=112", 3],
@@ -641,14 +878,23 @@ const pauseLabel = document.getElementById("pause-label");
 const pauseIcon = document.getElementById("pause-icon");
 const ICON_PAUSE = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
 const ICON_PLAY = '<path d="M7 5v14l12-7z"/>';
+function syncPauseLabel() {
+  const run = !!timer;
+  pauseBtn.setAttribute("aria-pressed", String(!run));
+  pauseLabel.textContent = T[lang][run ? "pause" : "play"];
+  pauseIcon.innerHTML = run ? ICON_PAUSE : ICON_PLAY;
+}
 function setRunning(run) {
   clearInterval(timer); timer = null;
   if (run) timer = setInterval(push, 2600);
-  pauseBtn.setAttribute("aria-pressed", String(!run));
-  pauseLabel.textContent = run ? "Pause" : "Play";
-  pauseIcon.innerHTML = run ? ICON_PAUSE : ICON_PLAY;
+  syncPauseLabel();
 }
 pauseBtn.addEventListener("click", () => setRunning(!timer));
+
+/* start: ?lang=xx in the address wins, then the visitor's last choice, then French */
+let start = "fr";
+try { const q = new URLSearchParams(location.search).get("lang"); const s = localStorage.getItem("sb-lang"); start = LANGS.includes(q) ? q : (LANGS.includes(s) ? s : "fr"); } catch (e) {}
+setLang(start, false);
 setRunning(!matchMedia("(prefers-reduced-motion: reduce)").matches);
 </script>
 </body>
