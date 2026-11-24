@@ -380,10 +380,10 @@ footer a { color: #f1f2f6; }
         <div class="ctas">
           <a class="btn primary" href="#work"><span data-i18n="hero.cta1"></span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
-          <a class="btn ghost" id="cv-main" href="Skander_Bedoui_CV_FR.pdf" download><span data-i18n="hero.cta2"></span>
+          <a class="btn ghost" id="cv-main" href="Skander_Bedoui_CV_FR.pdf?v=2" download><span data-i18n="hero.cta2"></span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M6.5 9.5 12 15l5.5-5.5M4 20h16"/></svg></a>
         </div>
-        <p class="cv-alt"><a id="cv-alt" href="Skander_Bedoui_CV.pdf" download data-i18n="hero.cvalt"></a></p>
+        <p class="cv-alt"><a id="cv-alt" href="Skander_Bedoui_CV.pdf?v=2" download data-i18n="hero.cvalt"></a></p>
         <div class="meta-row"><span data-i18n="hero.meta1"></span><span data-i18n="hero.meta2"></span><span data-i18n="hero.meta3"></span></div>
       </div>
 
@@ -800,7 +800,7 @@ filters.addEventListener("click", e => {
   grid.querySelectorAll(".card").forEach(c => { c.hidden = !(area === "all" || c.dataset.area === area); });
 });
 
-const CV_FILE = { fr: "Skander_Bedoui_CV_FR.pdf", en: "Skander_Bedoui_CV.pdf" };
+const CV_FILE = { fr: "Skander_Bedoui_CV_FR.pdf?v=2", en: "Skander_Bedoui_CV.pdf?v=2" };
 const CV_LANG = { fr: "fr", ar: "fr", en: "en", es: "en" }; /* CV offered first in each site language */
 
 function renderContact(t) {
