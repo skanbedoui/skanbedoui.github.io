@@ -195,6 +195,8 @@ body::before {
 .btn.primary:hover { text-decoration: underline; text-underline-offset: 4px; }
 .btn svg { width: 18px; height: 18px; flex: none; }
 :root[dir="rtl"] .btn svg.ext, :root[dir="rtl"] .card-link svg { transform: scaleX(-1); }
+.cv-alt { margin: 14px 0 0; font-size: 1.05rem; }
+.cv-alt a { display: inline-block; padding: 8px 0; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 .meta-row { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 30px; color: var(--muted); font-size: 1.05rem; }
 
 /* console */
@@ -378,9 +380,10 @@ footer a { color: #f1f2f6; }
         <div class="ctas">
           <a class="btn primary" href="#work"><span data-i18n="hero.cta1"></span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
-          <a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener"><span data-i18n="hero.cta2"></span>
-            <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 3h7v7M10 14 21 3M21 14v7H3V3h7"/></svg></a>
+          <a class="btn ghost" id="cv-main" href="Skander_Bedoui_CV_FR.pdf" download><span data-i18n="hero.cta2"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M6.5 9.5 12 15l5.5-5.5M4 20h16"/></svg></a>
         </div>
+        <p class="cv-alt"><a id="cv-alt" href="Skander_Bedoui_CV.pdf" download data-i18n="hero.cvalt"></a></p>
         <div class="meta-row"><span data-i18n="hero.meta1"></span><span data-i18n="hero.meta2"></span><span data-i18n="hero.meta3"></span></div>
       </div>
 
@@ -514,7 +517,7 @@ fr: {
   "theme.toDark": "Mode sombre", "theme.toLight": "Mode clair",
   "hero.avail": "Recherche un stage de 6 mois · janv.–juin 2027",
   "hero.lede": "Étudiant en génie logiciel. Je crée des <strong>sites web et des applications</strong> et des <strong>outils d'IA concrets</strong> qui montrent d'où viennent leurs réponses.",
-  "hero.cta1": "Voir mes projets", "hero.cta2": "Ouvrir mon CV (PDF)",
+  "hero.cta1": "Voir mes projets", "hero.cta2": "Télécharger mon CV (PDF)", "hero.cvalt": "Télécharger la version anglaise du CV (PDF)",
   "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Tunisie", "hero.meta3": "Diplômé en 2027",
   "hero.cap": "Un résumé ludique de mon profil, écrit comme un journal système en direct. Il s'inspire de mon projet AI Logs, qui note chaque ligne de journal de 1 à 10 selon son urgence.",
   "pause": "Pause", "play": "Lecture",
@@ -546,8 +549,8 @@ fr: {
   "fact2.p": "Soutien RH et événementiel : actions caritatives, coordination interne et logistique.",
   "fact3.h": "Associations étudiantes", "fact3.p": "Activités, événements et initiatives de la communauté tech, organisés par des étudiants.",
   "contact.eyebrow": "Contact", "contact.title": "Construisons<br>quelque chose <span>d'utile.</span>",
-  "contact.p": "Je recherche un stage à partir de janvier 2027. Vous pouvez voir mon code sur GitHub ou lire mon CV.",
-  "contact.gh": "Mon profil GitHub", "contact.cv": "Mon CV (PDF)", "contact.li": "Mon profil LinkedIn",
+  "contact.p": "Je recherche un stage à partir de janvier 2027. Vous pouvez voir mon code sur GitHub ou télécharger mon CV.",
+  "contact.gh": "Mon profil GitHub", "contact.cv.fr": "Télécharger mon CV en français (PDF)", "contact.cv.en": "Télécharger mon CV en anglais (PDF)", "contact.li": "Mon profil LinkedIn",
   "contact.copy": "Copier mon adresse e-mail", "contact.copied": "Copié : ", "contact.email": "E-mail : ",
   "footer.top": "Retour en haut ↑",
   p: {
@@ -571,7 +574,7 @@ en: {
   "theme.toDark": "Dark mode", "theme.toLight": "Light mode",
   "hero.avail": "Looking for a 6-month internship · Jan–Jun 2027",
   "hero.lede": "Software engineering student. I build <strong>websites and apps</strong> and <strong>practical AI tools</strong> that show where their answers come from.",
-  "hero.cta1": "See my projects", "hero.cta2": "Open my CV (PDF)",
+  "hero.cta1": "See my projects", "hero.cta2": "Download my CV (PDF)", "hero.cvalt": "Download the French version of the CV (PDF)",
   "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Tunisia", "hero.meta3": "Graduating in 2027",
   "hero.cap": "A playful summary of my profile, written as a live system log. It's styled after my AI Logs project, which scores every log line from 1 to 10 by how urgent it is.",
   "pause": "Pause", "play": "Play",
@@ -603,8 +606,8 @@ en: {
   "fact2.p": "HR and event support: charity initiatives, internal coordination and logistics.",
   "fact3.h": "Student organizations", "fact3.p": "Student-led activities, events and tech-community initiatives.",
   "contact.eyebrow": "Contact", "contact.title": "Let's build<br>something <span>useful.</span>",
-  "contact.p": "I'm looking for an internship starting January 2027. You can see my code on GitHub or read my CV.",
-  "contact.gh": "My GitHub profile", "contact.cv": "My CV (PDF)", "contact.li": "My LinkedIn profile",
+  "contact.p": "I'm looking for an internship starting January 2027. You can see my code on GitHub or download my CV.",
+  "contact.gh": "My GitHub profile", "contact.cv.fr": "Download my CV in French (PDF)", "contact.cv.en": "Download my CV in English (PDF)", "contact.li": "My LinkedIn profile",
   "contact.copy": "Copy my email address", "contact.copied": "Copied: ", "contact.email": "Email: ",
   "footer.top": "Back to top ↑",
   p: {
@@ -628,7 +631,7 @@ ar: {
   "theme.toDark": "الوضع الداكن", "theme.toLight": "الوضع الفاتح",
   "hero.avail": "أبحث عن تدريب لمدة 6 أشهر · جانفي–جوان 2027",
   "hero.lede": "طالب في هندسة البرمجيات. أطوّر <strong>مواقع وتطبيقات</strong> و<strong>أدوات ذكاء اصطناعي عملية</strong> تُظهر مصدر إجاباتها.",
-  "hero.cta1": "شاهد مشاريعي", "hero.cta2": "افتح سيرتي الذاتية (PDF)",
+  "hero.cta1": "شاهد مشاريعي", "hero.cta2": "تحميل سيرتي الذاتية بالفرنسية (PDF)", "hero.cvalt": "تحميل السيرة الذاتية بالإنجليزية (PDF)",
   "hero.meta1": "MedTech، South Mediterranean University", "hero.meta2": "تونس", "hero.meta3": "التخرّج في 2027",
   "hero.cap": "ملخّص طريف لملفي مكتوب على شكل سجلّ نظام مباشر. وهو مستوحى من مشروعي AI Logs الذي يمنح كل سطر في السجلّ درجة من 1 إلى 10 حسب درجة الاستعجال.",
   "pause": "إيقاف مؤقت", "play": "تشغيل",
@@ -660,8 +663,8 @@ ar: {
   "fact2.p": "دعم في الموارد البشرية وتنظيم الفعاليات: مبادرات خيرية وتنسيق داخلي ولوجستيك.",
   "fact3.h": "المنظمات الطلابية", "fact3.p": "أنشطة وفعاليات ومبادرات لمجتمع التكنولوجيا يقودها الطلبة.",
   "contact.eyebrow": "تواصل", "contact.title": "لنبنِ معًا<br>شيئًا <span>مفيدًا.</span>",
-  "contact.p": "أبحث عن تدريب ابتداءً من جانفي 2027. يمكنك الاطلاع على شيفرتي في GitHub أو قراءة سيرتي الذاتية.",
-  "contact.gh": "حسابي على GitHub", "contact.cv": "سيرتي الذاتية (PDF)", "contact.li": "حسابي على LinkedIn",
+  "contact.p": "أبحث عن تدريب ابتداءً من جانفي 2027. يمكنك الاطلاع على شيفرتي في GitHub أو تحميل سيرتي الذاتية.",
+  "contact.gh": "حسابي على GitHub", "contact.cv.fr": "تحميل سيرتي الذاتية بالفرنسية (PDF)", "contact.cv.en": "تحميل سيرتي الذاتية بالإنجليزية (PDF)", "contact.li": "حسابي على LinkedIn",
   "contact.copy": "انسخ بريدي الإلكتروني", "contact.copied": "تم النسخ: ", "contact.email": "البريد الإلكتروني: ",
   "footer.top": "العودة إلى الأعلى ↑",
   p: {
@@ -685,7 +688,7 @@ es: {
   "theme.toDark": "Modo oscuro", "theme.toLight": "Modo claro",
   "hero.avail": "Busco prácticas de 6 meses · ene.–jun. 2027",
   "hero.lede": "Estudiante de ingeniería de software. Creo <strong>sitios web y aplicaciones</strong> y <strong>herramientas de IA prácticas</strong> que muestran de dónde salen sus respuestas.",
-  "hero.cta1": "Ver mis proyectos", "hero.cta2": "Abrir mi CV (PDF)",
+  "hero.cta1": "Ver mis proyectos", "hero.cta2": "Descargar mi CV en inglés (PDF)", "hero.cvalt": "Descargar el CV en francés (PDF)",
   "hero.meta1": "MedTech, South Mediterranean University", "hero.meta2": "Túnez", "hero.meta3": "Me gradúo en 2027",
   "hero.cap": "Un resumen divertido de mi perfil, escrito como un registro del sistema en directo. Está inspirado en mi proyecto AI Logs, que puntúa cada línea de registro del 1 al 10 según su urgencia.",
   "pause": "Pausa", "play": "Reproducir",
@@ -717,8 +720,8 @@ es: {
   "fact2.p": "Apoyo en RR. HH. y eventos: iniciativas benéficas, coordinación interna y logística.",
   "fact3.h": "Organizaciones estudiantiles", "fact3.p": "Actividades, eventos e iniciativas de la comunidad tecnológica organizadas por estudiantes.",
   "contact.eyebrow": "Contacto", "contact.title": "Construyamos<br>algo <span>útil.</span>",
-  "contact.p": "Busco prácticas a partir de enero de 2027. Puedes ver mi código en GitHub o leer mi CV.",
-  "contact.gh": "Mi perfil de GitHub", "contact.cv": "Mi CV (PDF)", "contact.li": "Mi perfil de LinkedIn",
+  "contact.p": "Busco prácticas a partir de enero de 2027. Puedes ver mi código en GitHub o descargar mi CV.",
+  "contact.gh": "Mi perfil de GitHub", "contact.cv.fr": "Descargar mi CV en francés (PDF)", "contact.cv.en": "Descargar mi CV en inglés (PDF)", "contact.li": "Mi perfil de LinkedIn",
   "contact.copy": "Copiar mi correo electrónico", "contact.copied": "Copiado: ", "contact.email": "Correo: ",
   "footer.top": "Volver arriba ↑",
   p: {
@@ -797,12 +800,16 @@ filters.addEventListener("click", e => {
   grid.querySelectorAll(".card").forEach(c => { c.hidden = !(area === "all" || c.dataset.area === area); });
 });
 
+const CV_FILE = { fr: "Skander_Bedoui_CV_FR.pdf", en: "Skander_Bedoui_CV.pdf" };
+const CV_LANG = { fr: "fr", ar: "fr", en: "en", es: "en" }; /* CV offered first in each site language */
+
 function renderContact(t) {
   let html = "";
   if (CONTACT.email) html += `<button type="button" class="btn primary" id="copy-email">${esc(t["contact.copy"])}</button>`;
   html += `<a class="btn ${CONTACT.email ? "ghost" : "primary"}" href="https://github.com/skanbedoui" target="_blank" rel="noopener">${esc(t["contact.gh"])}</a>`;
   if (CONTACT.linkedin) html += `<a class="btn ghost" href="${esc(CONTACT.linkedin)}" target="_blank" rel="noopener">${esc(t["contact.li"])}</a>`;
-  html += `<a class="btn ghost" href="Skander_Bedoui_CV.pdf" target="_blank" rel="noopener">${esc(t["contact.cv"])}</a>`;
+  const cvs = CV_LANG[lang] === "fr" ? ["fr", "en"] : ["en", "fr"];
+  cvs.forEach(k => { html += `<a class="btn ghost" href="${CV_FILE[k]}" download>${esc(t["contact.cv." + k])}</a>`; });
   links.innerHTML = html;
   note.textContent = CONTACT.email ? t["contact.email"] + CONTACT.email : "";
   const copyBtn = document.getElementById("copy-email");
@@ -822,6 +829,9 @@ function setLang(next, save) {
   document.getElementById("nav").setAttribute("aria-label", t["nav.label"]);
   const md = document.querySelector('meta[name="description"]'); if (md) md.content = t["meta.desc"];
   document.getElementById("lang-select").value = lang;
+  const first = CV_LANG[lang];
+  document.getElementById("cv-main").href = CV_FILE[first];
+  document.getElementById("cv-alt").href = CV_FILE[first === "fr" ? "en" : "fr"];
   renderProjects(t);
   renderContact(t);
   syncThemeLabel();
